@@ -80,6 +80,7 @@ final class ITunesSearchService {
                     do {
                         let result = try self.decoder.decode(ITunesSearchResult<ITunesSong>.self, from: data)
                         let apps = result.results
+                        print("# SONGS \(apps)")
                         completion?(.success(apps))
                     } catch {
                         print(error)
