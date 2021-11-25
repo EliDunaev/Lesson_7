@@ -10,7 +10,7 @@ import UIKit
 
 // Это View
 
-final class SearchViewController: UIViewController, SearchViewInput {
+final class SearchViewController: UIViewController, SearchViewInput, UIToolbarDelegate {
     
     // MARK: - Private Properties
     
@@ -46,6 +46,7 @@ final class SearchViewController: UIViewController, SearchViewInput {
         self.searchView.tableView.register(AppCell.self, forCellReuseIdentifier: Constants.reuseIdentifier)
         self.searchView.tableView.delegate = self
         self.searchView.tableView.dataSource = self
+        self.searchView.toolBar.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -72,6 +73,14 @@ final class SearchViewController: UIViewController, SearchViewInput {
     
     func hideNoResults() {
         self.searchView.emptyResultView.isHidden = true
+    }
+    
+    @objc private func song() {
+        print("#CLICK")
+    }
+    
+    @objc private func apps() {
+        print("#CLICK")
     }
     
 }

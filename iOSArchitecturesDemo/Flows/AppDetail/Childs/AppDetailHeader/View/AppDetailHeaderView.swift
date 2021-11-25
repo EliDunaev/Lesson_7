@@ -15,7 +15,7 @@ class AppDetailHeaderView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .label
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.font = UIFont.boldSystemFont(ofSize: 15)
         label.numberOfLines = 2
         return label
     }()
@@ -24,7 +24,7 @@ class AppDetailHeaderView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .secondaryLabel
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = UIFont.systemFont(ofSize: 10)
         label.numberOfLines = 2
         return label
     }()
@@ -60,7 +60,7 @@ class AppDetailHeaderView: UIView {
         self.setupView()
     }
     
-    // MARK - Private
+    // MARK: - Private
     
     private func setupView() {
         self.addSubview(iconView)
@@ -69,25 +69,25 @@ class AppDetailHeaderView: UIView {
         self.addSubview(actionButton)
         
         NSLayoutConstraint.activate([
-            self.iconView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16),
-            self.iconView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-            self.iconView.heightAnchor.constraint(equalToConstant: 80),
-            self.iconView.widthAnchor.constraint(equalToConstant: 80),
+            self.iconView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8),
+            self.iconView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8 ),
+            self.iconView.heightAnchor.constraint(equalToConstant: 100),
+            self.iconView.widthAnchor.constraint(equalToConstant: 100),
+            self.iconView.bottomAnchor.constraint(lessThanOrEqualTo: self.bottomAnchor, constant: 0),
             
-            self.titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+            self.titleLabel.topAnchor.constraint(lessThanOrEqualTo: self.iconView.topAnchor, constant: -16),
             self.titleLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16),
             self.titleLabel.bottomAnchor.constraint(equalTo: self.subtitleLabel.topAnchor, constant: -4),
             self.titleLabel.leftAnchor.constraint(equalTo: self.iconView.rightAnchor, constant: 8),
             
             self.subtitleLabel.leftAnchor.constraint(equalTo: self.iconView.rightAnchor, constant: 8),
-            
             self.subtitleLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16),
             
             self.actionButton.topAnchor.constraint(equalTo: self.subtitleLabel.bottomAnchor, constant: 10),
-            self.actionButton.leftAnchor.constraint(equalTo: self.iconView.rightAnchor, constant: 8),
+            self.actionButton.leftAnchor.constraint(equalTo: self.iconView.rightAnchor, constant: 5),
             self.actionButton.widthAnchor.constraint(equalToConstant: 80),
-            self.actionButton.heightAnchor.constraint(equalToConstant: 36),
-            self.actionButton.bottomAnchor.constraint(lessThanOrEqualTo: self.bottomAnchor, constant: -16)
+            self.actionButton.heightAnchor.constraint(equalToConstant: 34),
+            self.actionButton.bottomAnchor.constraint(greaterThanOrEqualTo: self.iconView.bottomAnchor, constant: 0)
         ])
     }
     
@@ -111,6 +111,6 @@ struct AppDetailHeaderView_Preview: PreviewProvider {
         view.titleLabel.text = "ВКонтакте"
         view.iconView.backgroundColor = .red
         return UIPreview(view)
-            .previewLayout(.fixed(width: 375, height: 200))
+            .previewLayout(.fixed(width: 375, height: 150))
     }
 }
