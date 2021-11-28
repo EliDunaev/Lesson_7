@@ -59,11 +59,17 @@ final class SongCell: UITableViewCell {
     }
     
     // MARK: - Methods
+    private let imageDownloader = ImageDownloader()
     
     func configure(with cellModel: SongCellModel) {
         self.trackName.text = cellModel.trackName
         self.artistName.text = cellModel.artist
         self.albumName.text = cellModel.albumName
+        
+        self.imageDownloader.getImage(fromUrl: cellModel.artwork) { (image, error) in
+            guard let image = image else { return }
+            self.songCover.image = image
+        }
     }
     
     // MARK: - UI

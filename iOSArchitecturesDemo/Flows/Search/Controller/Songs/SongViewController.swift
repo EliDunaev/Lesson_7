@@ -10,27 +10,21 @@ import UIKit
 
 final class SongSearchViewController: UIViewController, SongSearchViewInput, UIToolbarDelegate {
     
-    
     // MARK: - Private Properties
     
     private var searchView: SongSearchView {
         return self.view as! SongSearchView
     }
     
-    var searchResults = [ITunesSong]() {
-        didSet {
-            self.searchView.searchBar.resignFirstResponder()
-            self.searchView.tableView.isHidden = self.searchResults.isEmpty
-            self.searchView.tableView.reloadData()
-        }
-    }
+    var searchResult: [SongCellModel] = []
+    
     
     private struct Constants {
         static let reuseIdentifier = "reuseId"
     }
     
     var output: SongSearchViewOutput! // Всегда сильная ссылка
-    private let imageDownloader = ImageDownloader()
+
     
     // MARK: - Lifecycle
     
@@ -60,6 +54,13 @@ final class SongSearchViewController: UIViewController, SongSearchViewInput, UIT
         UIApplication.shared.isNetworkActivityIndicatorVisible = show
     }
     
+    func setSearchResult(_ cellModels: [SongCellModel]) {
+        self.searchResult = cellModels
+        self.searchView.tableView.reloadData()
+        self.searchView.tableView.isHidden = false
+        self.searchView.searchBar.resignFirstResponder()
+    }
+    
     func showError(error: Error) {
         let alert = UIAlertController(title: "Error", message: "\(error.localizedDescription)", preferredStyle: .alert)
         let actionOk = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -81,7 +82,7 @@ final class SongSearchViewController: UIViewController, SongSearchViewInput, UIT
 extension SongSearchViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchResults.count
+        return searchResult.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -89,14 +90,9 @@ extension SongSearchViewController: UITableViewDataSource {
         guard let cell = dequeuedCell as? SongCell else {
             return dequeuedCell
         }
-        let song = self.searchResults[indexPath.row]
-        let cellModel = SongCellModelFactory.cellModel(from: song)
-        cell.configure(with: cellModel)
+        let song = self.searchResult[indexPath.row]
+        cell.configure(with: song)
         
-        self.imageDownloader.getImage(fromUrl: song.artwork) { (image, error) in
-            guard let image = image else { return }
-            cell.songCover.image = image
-        }
         return cell
     }
 }
@@ -106,7 +102,7 @@ extension SongSearchViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let song = searchResults[indexPath.row]
+        let song = self.searchResult[indexPath.row]
         self.output.viewDidSelectSong(song)
     }
 }

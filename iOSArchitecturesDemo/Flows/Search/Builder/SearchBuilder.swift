@@ -23,13 +23,20 @@ class SearchBuilder {
     }
     
     static func buildSongSearch() -> SongSearchViewController {
-        let view = SongSearchViewController()
+        let viewController = SongSearchViewController()
+        let presenter = SongSearchPresenter()
+        let interactor = SongSearchInteractor(searchService: ITunesSearchService())
+        let router = SongSearchRouter()
         
-        let presenter = SongSearchPresenter(searchService: ITunesSearchService())
+        router.viewController = viewController
         
-        view.output = presenter
-        presenter.view = view
+        viewController.output = presenter
         
-        return view
+        presenter.interactor = interactor
+        presenter.router = router
+        presenter.view = viewController
+        
+        interactor.output = presenter
+        return viewController
     }
 }

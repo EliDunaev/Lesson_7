@@ -13,6 +13,7 @@ struct SongCellModel {
     let trackName: String
     let artist: String?
     let albumName: String?
+    let artwork: String
 }
 
 final class SongCellModelFactory {
@@ -20,6 +21,7 @@ final class SongCellModelFactory {
     static func cellModel(from model: ITunesSong) -> SongCellModel {
         return SongCellModel(trackName: model.trackName,
                              artist: model.artistName,
-                             albumName: model.collectionName)
+                             albumName: model.collectionName,
+                             artwork: model.artwork)
     }
 }
