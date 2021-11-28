@@ -11,7 +11,7 @@ import Foundation
 // этот объект собирает мне модуль MVP для поиска
 
 class SearchBuilder {
-    static func build() -> SearchViewController {
+    static func buildAppSearch() -> SearchViewController {
         let view = SearchViewController()
         
         let presenter = SearchPresenter(searchService: ITunesSearchService())
@@ -20,5 +20,23 @@ class SearchBuilder {
         presenter.view = view
         
         return view
+    }
+    
+    static func buildSongSearch() -> SongSearchViewController {
+        let viewController = SongSearchViewController()
+        let presenter = SongSearchPresenter()
+        let interactor = SongSearchInteractor(searchService: ITunesSearchService())
+        let router = SongSearchRouter()
+        
+        router.viewController = viewController
+        
+        viewController.output = presenter
+        
+        presenter.interactor = interactor
+        presenter.router = router
+        presenter.view = viewController
+        
+        interactor.output = presenter
+        return viewController
     }
 }
